@@ -3,8 +3,7 @@
 # Created by: GandalfTheNoob
 
 # Run the while loop until user enters a blank on Troop Type
-inp = True
-while inp == True:
+while inp:
 # Get the Troop type
     troopType = raw_input("Which type of troop?")
     if troopType == '': 
@@ -26,7 +25,7 @@ barbarian = {
 }
 
 
-# use TroopType user input to lcoation the dictionary  with the same name and then search fort he user entered troopLevel and quantity to use in a calculation.
+# use TroopType user input to locate the dictionary  with the same name and then search fort he user entered troopLevel and quantity to use in a calculation.
 
 searchTroop = 
 
