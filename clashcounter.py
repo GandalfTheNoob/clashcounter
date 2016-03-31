@@ -1,18 +1,12 @@
 # Clash of Clans Troop Cost estimator
-# v0.01
+# v0.10
 # Created by: GandalfTheNoob
 
-# Run the while loop until user enters a blank on Troop Type
-while inp:
-# Get the Troop type
-    troopType = raw_input("Which type of troop?")
-    if troopType == '': 
-        inp = False
-        break
-# Get the troop level
-    troopLevel = int(raw_input("What level of troop for %s?" %(troopType)))
-# Get the troop quantity
-    troopQuantity = int(raw_input("How many of %s?" %(troopType)))
+troopType = {
+    '1' : 'Barbarian',
+    '2' : 'Archer',
+    '3' : 'Giant',
+}
 
 barbarian = {
     '1' : 25,
@@ -25,13 +19,66 @@ barbarian = {
 }
 
 
-# use TroopType user input to locate the dictionary  with the same name and then search fort he user entered troopLevel and quantity to use in a calculation.
+archer = {
+    '1' : 50,
+    '2' : 80,
+    '3' : 120,
+    '4' : 200,
+    '5' : 300,
+    '6' : 400,
+    '7' : 500,
+}
 
-searchTroop = 
-
-for key, value in troopType.iteritems():
+giant = {
+    '1' : 250,
+    '2' : 750,
+    '3' : 1250,
+    '4' : 17500,
+    '5' : 2250,
+    '6' : 3000,
+    '7' : 3500,
+}
+for key, value in barbarian.iteritems():
     if key == "1":
         print "Key found!"
         print 'key=%s value=%s' % (key, value)
         break
+
+# Run the while loop until user enters a blank on Troop Type
+inp = True
+while inp:
+
+    # An attempt at a user menu:
+    print ('''
+        Press 0 to exit
+        Press 1 if you want to use barbarians
+        Press 2 if you want to use archers
+        Press 3 if you want to use giants
+        
+    ''')
+    uInp = raw_input()
+    
+    # Get the troop level
+    troopLevel = raw_input("What level of troop for %s?" %(troopType[uInp]))
+    # Get the troop quantity
+    troopQuantity = int(raw_input("How many of %s?" %(troopType[uInp])))
+    
+    
+    if uInp == '0' or '':
+        break
+
+    if uInp == '1':
+        print "Barbarian level is: ", troopLevel
+        print "Barbarian quantity is: ", troopQuantity
+        print "Cost of barbarians is: ", int(barbarian[troopLevel]) * troopQuantity
+
+    if uInp == '2':
+        print "Archer level is: ", troopLevel
+        print "Archer quantity is: ", troopQuantity
+        print "Cost of archers is: ", int(archer[troopLevel]) * troopQuantity
+
+    if uInp == '3':
+        print "Giant level is: ", troopLevel
+        print "Giant quantity is: ", troopQuantity
+        print "Cost of giants is: ", int(giant[troopLevel]) * troopQuantity
 
