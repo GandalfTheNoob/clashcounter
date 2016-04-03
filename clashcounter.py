@@ -2,10 +2,34 @@
 # v0.10
 # Created by: GandalfTheNoob
 
+import sqlite3
+
+conn = sqlite3.connect('clashcounter.sqlite')
+cur = conn.cursor()
+
+cur.executescript('''
+DROP TABLE IF EXISTS troopType;
+
+
+
+CREATE TABLE troopType (
+    id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    name   TEXT UNIQUE
+);
+
+''')
+
 troopType = {
     '1' : 'Barbarian',
     '2' : 'Archer',
     '3' : 'Giant',
+    '4' : 'Wizard',
+    '5' : 'Wall Breaker',
+    '6' : 'Goblin',
+    '7' : 'Balloon',
+    '8' : 'Healer',
+    '9' : 'Dragon',
+    '10': 'Pekka',
 }
 
 barbarian = {
