@@ -62,18 +62,20 @@ spellType = {
 inp = True
 while inp:
 
+    # Top level input from user for selection
     print ('''
         Press 'A' for troops
         Press 'B' for spells
         Press 0 to exit
     ''')
 
-    firstInp = raw_input()
+    letterInp = raw_input()
 
-    if firstInp == '0' or '':
+    # If letterInp is 0 or blank then exit
+    if letterInp == '0' or '':
         break
-
-    if firstInp == 'A' or 'a':
+    # If letterInp is A then display the menu for troop type
+    if letterInp == 'A' or 'a':
 
         print ('''
             Press 1 if you want to use Barbarians
@@ -88,17 +90,18 @@ while inp:
             Press 10 if you want to use Pekka
         
         ''')
-        uInp = raw_input()
+        troopInp = raw_input()
         dbTrpType = ''
         dbTrpLvl = ''
         dbTrpCost = 0
             
         # Get the troop level
-        troopLevel = raw_input("What level of troop for %s? " %(troopType[uInp]))
+        troopLevel = raw_input("What level of troop for %s? " %(troopType[troopInp]))
+        
         # Get the troop quantity
-        troopQuantity = int(raw_input("How many of %s? " %(troopType[uInp])))
+        troopQuantity = int(raw_input("How many of %s? " %(troopType[troopInp])))
 
-        if uInp == '1':
+        if troopInp == '1':
             dbTrpType = troopType['4']
             print "Troop type is: ", dbTrpType
             print ''
@@ -113,7 +116,7 @@ while inp:
             print "Troop cost is", dbTrpCost
             print "Total cost is", dbTrpCost * troopQuantity
 
-    if firstInp == 'B' or 'b':
+    if letterInp == 'B' or 'b':
         print ('''
         Press 1 if you want to use Lightning Spell
         Press 2 if you want to use Healing Spell
