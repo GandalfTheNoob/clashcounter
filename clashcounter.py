@@ -1,6 +1,7 @@
 # Clash of Clans Troop Cost estimator
-# v0.10
+# v0.20
 # Created by: GandalfTheNoob
+# Uses Python 2.7
 
 import sqlite3
 
@@ -9,28 +10,45 @@ cur = conn.cursor()
 
 
 
-def convertTrpLvl(troopLevel):
+def convert_lvl(troop_level):
     try:
-        #print type(troopLevel)  ## for debugging
-        if troopLevel == 1:
+        #print type(troop_level)  ## for debugging
+        if troop_level == 1:
             return 'L1cost'
-        if troopLevel == 2:
+        if troop_level == 2:
             return 'L2cost'
-        if troopLevel == 3:
+        if troop_level == 3:
             return 'L3cost'
-        if troopLevel == 4:
+        if troop_level == 4:
             return 'L4cost'
-        if troopLevel == 5:
+        if troop_level == 5:
             return 'L5cost'
-        if troopLevel == 6:
+        if troop_level == 6:
             return 'L6cost'
-        if troopLevel == 7:
+        if troop_level == 7:
             return 'L7cost'
-        else: print "Something weird happened in the convertTrpLvl() conversion."    
+        else: print "Something weird happened in the convert_lvl() conversion."    
     except:
-        print "Something bad happened in convertTrpLvl(), try again."
+        print "Something bad happened in convert_lvl(), try again."
 
-troopType = {
+def get_db_select(passed_db_trp_type, passed_troop_level):
+    db_trp_type = troop_type[passed_db_trp_type]
+    db_trp_lvl = convert_lvl(int(passed_troop_level))
+    cur.execute('SELECT name, {col} FROM TroopType'.format(col = db_trp_lvl,))
+    db_trp_cost = cur.fetchone()[1]
+    print "Troop cost is", db_trp_cost
+    print "Total cost is", db_trp_cost * troop_quantity
+
+def get_spell_db_select(passed_db_spell_type, passed_spell_level):
+    db_spell_type = spell_type[passed_db_spell_type]
+    db_spell_lvl = convert_lvl(int(passed_spell_level))
+    cur.execute('SELECT name, {col} FROM SpellType'.format(col = db_spell_lvl,))
+    db_spell_cost = cur.fetchone()[1]
+    print "Spell cost is", db_spell_cost
+    print "Total cost is", db_spell_cost * spell_quantity
+
+
+troop_type = {
     '1' : 'Barbarian',
     '2' : 'Archer',
     '3' : 'Giant',
@@ -43,7 +61,7 @@ troopType = {
     '10': 'Pekka',
 }
 
-spellType = {
+spell_type = {
     '1' : 'Lightning Spell',
     '2' : 'Healing Spell',
     '3' : 'Rage Spell',
@@ -55,28 +73,26 @@ spellType = {
 }
 
 
-
-
-
-
 inp = True
 while inp:
-
+    letter_inp = ''
+    print type(letter_inp)
+    print "Top of the while loop.  letter_inp is ", letter_inp
     # Top level input from user for selection
     print ('''
-        Press 'A' for troops
-        Press 'B' for spells
+        Type 'A' for Troops
+        Type 'B' for Spells
         Press 0 to exit
     ''')
 
-    letterInp = raw_input()
-
-    # If letterInp is 0 or blank then exit
-    if letterInp == '0' or '':
+    letter_inp = raw_input()
+    print "Right after the raw_input() assignment to letter_inp.  letter_inp is ", letter_inp
+    # If letter_inp is 0 or blank then exit
+    if letter_inp in ['0', '']:
         break
-    # If letterInp is A then display the menu for troop type
-    if letterInp == 'A' or 'a':
-
+    # If letter_inp is A then display the menu for troop type
+    elif letter_inp.lower() == 'a':
+        print "Inside elif for 'troops' and letter_inp is ", letter_inp
         print ('''
             Press 1 if you want to use Barbarians
             Press 2 if you want to use Archer
@@ -88,35 +104,71 @@ while inp:
             Press 8 if you want to use Healer
             Press 9 if you want to use Dragon
             Press 10 if you want to use Pekka
-        
+
         ''')
-        troopInp = raw_input()
-        dbTrpType = ''
-        dbTrpLvl = ''
-        dbTrpCost = 0
-            
+        troop_inp = raw_input()
+        db_trp_type = ''
+        db_trp_lvl = ''
+        db_trp_cost = 0
+
         # Get the troop level
-        troopLevel = raw_input("What level of troop for %s? " %(troopType[troopInp]))
-        
+        troop_level = raw_input("What level of troop for %s? " %(troop_type[troop_inp]))
+
         # Get the troop quantity
-        troopQuantity = int(raw_input("How many of %s? " %(troopType[troopInp])))
+        troop_quantity = int(raw_input("How many of %s? " %(troop_type[troop_inp])))
 
-        if troopInp == '1':
-            dbTrpType = troopType['4']
-            print "Troop type is: ", dbTrpType
-            print ''
-            print 'Using sqlite database now ...'
-            print ''
-            print "dbTrpLvl is: ",dbTrpLvl
-            print "troopLevel is: ", troopLevel
-            dbTrpLvl = convertTrpLvl(int(troopLevel))
-            print "dbTrpLvl is after using def(): ", dbTrpLvl
-            cur.execute('SELECT name, {lvlCol} FROM TroopType'.format(lvlCol = dbTrpLvl))
-            dbTrpCost = cur.fetchone()[1]
-            print "Troop cost is", dbTrpCost
-            print "Total cost is", dbTrpCost * troopQuantity
+        if troop_inp == '1':
+            #cur.execute('SELECT name, {lvlCol} FROM TroopType'.format(lvlCol = db_trp_lvl))
+            #db_trp_cost = cur.fetchone()[1]
+            get_db_select(troop_inp, troop_level)
 
-    if letterInp == 'B' or 'b':
+        elif troop_inp == '2':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '3':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '4':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)            
+
+        elif troop_inp == '5':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '6':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '7':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '8':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)            
+
+        elif troop_inp == '9':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+        elif troop_inp == '10':
+            print "About to run this from the def()"
+            print ""
+            get_db_select(troop_inp, troop_level)
+
+    elif letter_inp.lower() == 'b':
+        print "Inside elif for 'Spells'. letter_inp is ", letter_inp
         print ('''
         Press 1 if you want to use Lightning Spell
         Press 2 if you want to use Healing Spell
@@ -126,9 +178,64 @@ while inp:
         Press 6 if you want to use Poison Spell
         Press 7 if you want to use Earthquake Spell
         Press 8 if you want to use Haste Spell
-    
+
         ''')
 
+        spell_inp = raw_input()
+        dbspell_type = ''
+        dbSpellLvl = ''
+        dbSpellCost = 0
+
+        # Get the troop level
+        spell_level = raw_input("What level of spell for %s? " %(spell_type[spell_inp]))
+
+        # Get the troop quantity
+        spell_quantity = int(raw_input("How many of %s? " %(spell_type[spell_inp])))
+
+        if spell_inp == '1':
+            #cur.execute('SELECT name, {lvlCol} FROM TroopType'.format(lvlCol = db_trp_lvl))
+            #db_trp_cost = cur.fetchone()[1]
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '2':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '3':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '4':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)        
+
+        elif spell_inp == '5':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '6':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '7':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)
+
+        elif spell_inp == '8':
+            print "About to run this from the def()"
+            print ""
+            get_spell_db_select(spell_inp, spell_level)            
+    else:
+        print "nothing selected, try again"
+        continue
+
+conn.close()
 
 # for key, value in barbarian.iteritems():
 #     if key == "1":
